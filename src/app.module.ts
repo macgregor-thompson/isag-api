@@ -3,11 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GolfersModule } from './golfers/golfers.module';
+import * as dotenv from 'dotenv';
 
-const atlasURI = 'mongodb+srv://iSagAdmin:isuckatgolf@isag.yjdsm.mongodb.net/isag?retryWrites=true&w=majority'
+if (process.env.NODE_ENV !== 'production') dotenv.config();
 
 @Module({
-  imports: [MongooseModule.forRoot(atlasURI), GolfersModule],
+  imports: [MongooseModule.forRoot(process.env.DATABASE_URL), GolfersModule],
   controllers: [AppController],
   providers: [AppService],
 })
