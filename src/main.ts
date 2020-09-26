@@ -16,7 +16,6 @@ async function bootstrap() {
       enableImplicitConversion: true
     }
   }));
- // app.useGlobalGuards(new JwtAuthGuard())
   await app.listen(process.env.PORT || 3000);
 
   if (module.hot) {
