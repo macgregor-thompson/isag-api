@@ -7,6 +7,7 @@ import { ScorecardsModule } from './scorecards/scorecards.module';
 import { YearsModule } from './years/years.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { RulesModule } from './rules/rules.module';
 import * as dotenv from 'dotenv';
 
 if (process.env.NODE_ENV !== 'production') dotenv.config();
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV !== 'production') dotenv.config();
     YearsModule,
     AuthModule,
     UserModule,
+    RulesModule,
 
   ],
   controllers: [AppController],
