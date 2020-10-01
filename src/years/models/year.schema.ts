@@ -1,20 +1,26 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
+import { ObjectID } from 'mongodb';
 
 @Schema()
 export class Year extends Document {
+
+  //_id: string;
 
   @Prop()
   year: number;
 
   @Prop()
-  course: string;
-
-  @Prop()
   date: Date;
 
   @Prop()
-  playerIds: Types.ObjectId[];
+  current: boolean;
+
+  @Prop()
+  public: boolean;
+
+  @Prop()
+  playerIds: ObjectID[];
 
 }
 

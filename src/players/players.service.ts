@@ -29,24 +29,20 @@ export class PlayersService {
   }
 
   async getByYear(year: number): Promise<Player[]> {
-    return this.connection.collection('years')
-      .aggregate([
+    const yearWithPlayers = await this.connection.collection('years')
+      .aggregate<{players: Player[]}>([
         { $match: { year } },
         {
           $lookup: {
-            from: Player.name,
+            from: this.playerModel.collection.collectionName,
             localField: 'playerIds',
             foreignField: '_id',
             as: 'players',
           },
-        },
-        {
-          $unwind: {
-            path: '$players',
-            preserveNullAndEmptyArrays: true,
-          },
-        },
+        }
       ]).toArray();
+
+    return yearWithPlayers[0].players
   }
 
   async create(createPlayerDto: CreatePlayerDto): Promise<Player> {

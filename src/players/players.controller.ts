@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 
 import { Request } from 'express';
 
@@ -17,9 +17,9 @@ export class PlayersController {
     return this.playersService.getAll();
   }
 
-  @Get()
-  async getByYear(@Query('year') year: number): Promise<Player[]> {
-    return this.playersService.getByYear(year);
+  @Get(':year')
+  async getByYear(@Param('year') year: number): Promise<Player[]> {
+    return year ? this.playersService.getByYear(year) : this.playersService.getAll();
   }
 
   @UseGuards(JwtAuthGuard)
