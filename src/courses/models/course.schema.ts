@@ -1,12 +1,14 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-
-import { Hole } from './hole';
+import { NineHoles } from './nine-holes';
 
 
 export class Course extends Document {
   @Prop()
   name: string;
+
+  @Prop()
+  year: number;
 
   @Prop()
   slope: number;
@@ -18,10 +20,22 @@ export class Course extends Document {
   tees: string;
 
   @Prop()
-  frontNine: Hole[];
+  frontNine: NineHoles;
 
   @Prop()
-  backNine: Hole[];
+  backNine: NineHoles;
+
+  @Prop()
+  frontNineYards: number;
+
+  @Prop()
+  backNineYards: number;
+
+  @Prop()
+  frontNinePar: number;
+
+  @Prop()
+  backNinePar: number;
 
   @Prop()
   scorecardUrl: string;
