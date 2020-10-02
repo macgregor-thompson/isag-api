@@ -7,7 +7,7 @@ import { CreateUserDto } from '../user/models/create-user.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
+ // @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
     console.log('foo', req)
