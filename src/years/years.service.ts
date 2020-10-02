@@ -14,7 +14,7 @@ export class YearsService {
               @InjectConnection() private connection: Connection) {}
 
   async getAll(): Promise<Year[]> {
-    return this.yearModel.find({public: {$ne: false}}).exec();
+    return this.yearModel.find({public: {$ne: false}}).sort({year: -1}).exec();
   }
 
   async getCurrentYear(): Promise<Year> {
@@ -28,9 +28,17 @@ export class YearsService {
         {
           $lookup: {
             from: 'players',
-            localField: 'playerIds',
+            localField: 'aPlayerIds',
             foreignField: '_id',
-            as: 'players',
+            as: 'aPlayers',
+          },
+        },
+        {
+          $lookup: {
+            from: 'players',
+            localField: 'bPlayerIds',
+            foreignField: '_id',
+            as: 'bPlayers',
           },
         },
       ]).toArray();

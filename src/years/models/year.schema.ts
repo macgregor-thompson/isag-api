@@ -20,7 +20,10 @@ export class Year extends Document {
   public: boolean;
 
   @Prop()
-  playerIds: ObjectID[];
+  aPlayerIds: ObjectID[];
+
+  @Prop()
+  bPlayerIds: ObjectID[];
 
 }
 
