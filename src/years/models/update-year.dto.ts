@@ -23,33 +23,33 @@ export class UpdateYearDto extends PartialType(CreateYearDto) {
   @IsOptional()
   @IsArray()
   @Transform(ids => ids.map(MongoHelper.toObjectId), { toClassOnly: true })
-  paidPlayerIds: ObjectID[];
+  paidPlayerIds?: ObjectID[];
 
   @IsOptional()
   @IsNumber()
-  playerDues: number;
+  playerDues?: number;
 
   @IsOptional()
   @IsArray()
   @Type(() => Expense)
   @ValidateNested({each: true})
-  expenses: Expense[];
+  expenses?: Expense[];
 
   @IsOptional()
   @IsArray()
   @Type(() => Expense)
   @ValidateNested({each: true})
-  prizes: Expense[];
+  prizes?: Expense[];
 
   @IsOptional()
   @IsNumber()
-  firstPlacePercentage: number;
+  firstPlacePercentage?: number;
 
   @IsOptional()
   @IsNumber()
-  secondPlacePercentage: number;
+  secondPlacePercentage?: number;
 
   @IsOptional()
   @IsNumber()
-  thirdPlacePercentage: number;
+  thirdPlacePercentage?: number;
 }
