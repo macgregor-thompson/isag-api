@@ -10,4 +10,8 @@ export class UpdateYearDto extends PartialType(CreateYearDto) {
   @IsOptional()
   @IsBoolean()
   current?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  deleted?: boolean;
 }

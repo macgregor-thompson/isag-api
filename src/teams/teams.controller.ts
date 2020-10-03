@@ -26,10 +26,4 @@ export class TeamsController {
   async update(@Param('id') id, @Body() update: UpdateTeamDto): Promise<Team> {
     return this.teamService.update(id, update);
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  async delete(@Param('id') id): Promise<Team> {
-    return this.teamService.delete(id);
-  }
 }

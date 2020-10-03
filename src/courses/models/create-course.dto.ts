@@ -1,7 +1,7 @@
-import { Hole } from './hole';
-import { IsArray, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { NineHoles } from './nine-holes';
+import { FrontNine } from './front-nine';
+import { BackNine } from './back-nine';
 
 
 export class CreateCourseDto {
@@ -12,9 +12,11 @@ export class CreateCourseDto {
   @IsNumber()
   year: number;
 
+  @IsOptional()
   @IsNumber()
   slope: number;
 
+  @IsOptional()
   @IsNumber()
   courseRating: number;
 
@@ -22,12 +24,12 @@ export class CreateCourseDto {
   tees: string;
 
   @ValidateNested()
-  @Type(() => NineHoles)
-  frontNine: NineHoles
+  @Type(() => FrontNine)
+  frontNine: FrontNine
 
   @ValidateNested()
-  @Type(() => NineHoles)
-  backNine: NineHoles
+  @Type(() => BackNine)
+  backNine: BackNine
 
   @IsNumber()
   frontNineYards: number;
@@ -41,6 +43,7 @@ export class CreateCourseDto {
   @IsNumber()
   backNinePar: number;
 
+  @IsOptional()
   @IsString()
   scorecardUrl: string;
 }

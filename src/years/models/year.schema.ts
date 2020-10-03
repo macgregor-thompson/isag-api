@@ -25,6 +25,9 @@ export class Year extends Document {
   @Prop()
   bPlayerIds: ObjectID[];
 
+  @Prop()
+  deleted: boolean;
+
 }
 
 export const YearSchema = SchemaFactory.createForClass(Year);

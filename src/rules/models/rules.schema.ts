@@ -9,6 +9,9 @@ export class Rules extends Document {
   @Prop()
   html: string;
 
+  @Prop()
+  deleted: boolean;
+
 }
 
 export const RulesSchema = SchemaFactory.createForClass(Rules);

@@ -6,9 +6,9 @@ export class UpdatePlayerDto extends PartialType(CreatePlayerDto) {
 
   @IsOptional()
   @IsString()
-  avatarUrl: string;
+  avatarUrl?: string;
 
   @IsOptional()
   @IsBoolean()
-  deleted: boolean;
+  deleted?: boolean;
 }

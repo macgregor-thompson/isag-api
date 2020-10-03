@@ -14,11 +14,12 @@ export class YearsService {
               @InjectConnection() private connection: Connection) {}
 
   async getAll(): Promise<Year[]> {
-    return this.yearModel.find({public: {$ne: false}}).sort({year: -1}).exec();
+    return this.yearModel.find({ public: { $ne: false }, deleted: { $ne: true } })
+      .sort({ year: -1 }).exec();
   }
 
   async getCurrentYear(): Promise<Year> {
-    return this.yearModel.findOne({current: true, public: {$ne: false}}).exec();
+    return this.yearModel.findOne({ current: true, public: { $ne: false }, deleted: { $ne: true } }).exec();
   }
 
   async getYearWithPlayers(year: number): Promise<Array<Year & { players: Player[] }>> {
@@ -58,9 +59,5 @@ export class YearsService {
       throw new NotFoundException(`Year #${id} not found`);
     }
     return existingYear;
-  }
-
-  async delete(yearId: string): Promise<Year> {
-    return this.yearModel.findByIdAndDelete(yearId);
   }
 }

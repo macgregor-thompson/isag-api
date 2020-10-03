@@ -13,7 +13,7 @@ export class RulesService {
               @InjectConnection() private readonly connection: Connection) {}
 
   async getByYear(year: number): Promise<Rules> {
-    return this.rulesModel.findOne({year}).exec();
+    return this.rulesModel.findOne({year, deleted: { $ne: true } }).exec();
   }
 
   async create(createRulesDto: CreateRulesDto): Promise<Rules> {

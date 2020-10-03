@@ -13,6 +13,9 @@ export class Team extends Document {
   @Prop()
   playerB: TeamPlayer;
 
+  @Prop()
+  deleted: boolean;
+
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);

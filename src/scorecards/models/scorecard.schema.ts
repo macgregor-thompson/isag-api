@@ -1,7 +1,8 @@
 import { Document } from 'mongoose';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Score } from '../../courses/models/score';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Score } from './score';
 
+@Schema()
 export class Scorecard extends Document {
   @Prop()
   year: number;
@@ -23,6 +24,9 @@ export class Scorecard extends Document {
 
   @Prop()
   totalScore: number;
+
+  @Prop()
+  deleted: boolean;
 
 }
 

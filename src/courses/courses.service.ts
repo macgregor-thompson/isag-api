@@ -13,16 +13,16 @@ export class CoursesService {
               @InjectConnection() private readonly connection: Connection) {}
 
   async getAll(): Promise<Course[]> {
-    return this.courseModel.find({}).exec();
+    return this.courseModel.find({ deleted: { $ne: true } }).exec();
   }
 
   async getByYear(year: number): Promise<Course> {
-    return this.courseModel.findOne({year}).exec();
-
+    return this.courseModel.findOne({ year }).exec();
   }
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     const course = new this.courseModel(createCourseDto);
+    console.log('new course:', course);
     return this.courseModel.create(course);
   }
 

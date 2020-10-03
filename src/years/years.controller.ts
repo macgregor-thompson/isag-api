@@ -11,12 +11,12 @@ export class YearsController {
   constructor(private yearsService: YearsService) {}
 
   @Get()
-  async getAll(): Promise<Year[]>{
+  async getAll(): Promise<Year[]> {
     return this.yearsService.getAll();
   }
 
   @Get(':year')
-  async getYearWithPlayers(@Param('year') year: number): Promise<Year[]>{
+  async getYearWithPlayers(@Param('year') year: number): Promise<Year[]> {
     return this.yearsService.getYearWithPlayers(year);
   }
 
@@ -36,17 +36,11 @@ export class YearsController {
   @Patch(':id/SetCurrent')
   async setCurrent(@Param('id') id): Promise<Year> {
     const currentYear = await this.yearsService.getCurrentYear();
-    const [,current ] = await Promise.all([
-      this.yearsService.update(currentYear._id, {current: false}),
-      this.yearsService.update(id, {current: true}),
-    ])
+    const [, current] = await Promise.all([
+      this.yearsService.update(currentYear._id, { current: false }),
+      this.yearsService.update(id, { current: true }),
+    ]);
     return current;
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  async delete(@Param('id') id): Promise<Year> {
-    return this.yearsService.delete(id);
   }
 
 }

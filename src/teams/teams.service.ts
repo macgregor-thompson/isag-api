@@ -4,9 +4,6 @@ import { Connection, Model } from 'mongoose';
 import { Team } from './models/team.schema';
 import { CreateTeamDto } from './models/create-team.dto';
 import { UpdateTeamDto } from './models/update-team.dto';
-import { ObjectID } from 'mongodb';
-import { Year } from '../years/models/year.schema';
-import { Player } from '../players/models/player.schema';
 
 
 @Injectable()
@@ -18,7 +15,7 @@ export class TeamsService {
   async getByYear(year: number): Promise<Team[]> {
     return this.connection.collection(this.teamModel.collection.collectionName)
       .aggregate<Team>([
-        { $match: { year } },
+        { $match: { year, deleted: { $ne: true } } },
         {
           $lookup: {
             from: 'players',
@@ -30,8 +27,8 @@ export class TeamsService {
         {
           $unwind: {
             path: '$playerA',
-            preserveNullAndEmptyArrays: true
-          }
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $lookup: {
@@ -44,8 +41,8 @@ export class TeamsService {
         {
           $unwind: {
             path: '$playerB',
-            preserveNullAndEmptyArrays: true
-          }
+            preserveNullAndEmptyArrays: true,
+          },
         },
       ]).toArray();
   }
@@ -66,7 +63,4 @@ export class TeamsService {
     return existingTeam;
   }
 
-  async delete(teamId: string): Promise<Team> {
-    return this.teamModel.findByIdAndDelete(teamId);
-  }
 }
