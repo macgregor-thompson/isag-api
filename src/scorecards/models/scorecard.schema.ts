@@ -1,6 +1,8 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Score } from './score';
+import { Scores } from './scores';
+import { OptionalScores } from './optional-scores';
+import { ObjectID } from '../../_shared/mongo-helper';
 
 @Schema()
 export class Scorecard extends Document {
@@ -8,22 +10,28 @@ export class Scorecard extends Document {
   year: number;
 
   @Prop()
-  teamId: string;
+  teamId: ObjectID;
 
   @Prop()
-  courseId: string;
+  courseId: ObjectID;
 
   @Prop()
-  playerAScores: Score[];
+  playerANetScores: OptionalScores;
 
   @Prop()
-  playerBScores: Score[];
+  playerBNetScores: OptionalScores;
 
   @Prop()
-  scores: Score[];
+  teamNetScores: Scores;
 
   @Prop()
-  totalScore: number;
+  frontNineNetScore: number;
+
+  @Prop()
+  backNineNetScore: number;
+
+  @Prop()
+  totalNetScore: number;
 
   @Prop()
   deleted: boolean;

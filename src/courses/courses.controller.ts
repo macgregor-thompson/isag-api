@@ -17,8 +17,8 @@ export class CoursesController {
     return this.coursesService.getAll();
   }
 
-  @Get()
-  async getByYear(@Query('year') year: number): Promise<Course> {
+  @Get(':year')
+  async getByYear(@Param('year') year: number): Promise<Course> {
     return this.coursesService.getByYear(year);
   }
 

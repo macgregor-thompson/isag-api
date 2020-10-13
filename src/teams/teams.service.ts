@@ -4,6 +4,7 @@ import { Connection, Model } from 'mongoose';
 import { Team } from './models/team.schema';
 import { CreateTeamDto } from './models/create-team.dto';
 import { UpdateTeamDto } from './models/update-team.dto';
+import { ObjectID } from '../_shared/mongo-helper';
 
 
 @Injectable()
@@ -45,6 +46,41 @@ export class TeamsService {
           },
         },
       ]).toArray();
+  }
+
+  async getById(teamId: ObjectID): Promise<Team> {
+    return (await this.connection.collection(this.teamModel.collection.collectionName)
+      .aggregate<Team>([
+        { $match: { _id: teamId } },
+        {
+          $lookup: {
+            from: 'players',
+            localField: 'playerA.playerId',
+            foreignField: '_id',
+            as: 'playerA',
+          },
+        },
+        {
+          $unwind: {
+            path: '$playerA',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: 'players',
+            localField: 'playerB.playerId',
+            foreignField: '_id',
+            as: 'playerB',
+          },
+        },
+        {
+          $unwind: {
+            path: '$playerB',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+      ]).toArray())[0];
   }
 
   async create(createTeamDto: CreateTeamDto): Promise<Team> {
