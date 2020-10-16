@@ -19,8 +19,12 @@ export class ScorecardsService {
     return this.connection.collection(this.ScorecardModel.collection.collectionName)
       .aggregate([
         {
-          $match: { year }
+          $match: {
+            year,
+            deleted: {$ne: true}
+          }
         },
+        { $sort: { totalNetScore: 1 } },
         {
           $lookup: {
             from: 'teams',

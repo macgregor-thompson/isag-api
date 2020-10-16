@@ -10,25 +10,15 @@ export class CreateScorecardDto {
   @IsNumber()
   year: number;
 
-  @IsOptional()
+  @IsOptional() // must be here for validation
   @Type(() => ObjectID)
   @Transform(MongoHelper.toObjectId, { toClassOnly: true })
   teamId: ObjectID;
 
-  @IsOptional()
+  @IsOptional() // must be here for validation
   @Type(() => ObjectID)
   @Transform(MongoHelper.toObjectId, { toClassOnly: true })
   courseId: ObjectID;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OptionalScores)
-  playerANetScores?: OptionalScores;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OptionalScores)
-  playerBNetScores?: OptionalScores;
 
   @ValidateNested()
   @Type(() => Scores)
@@ -42,5 +32,41 @@ export class CreateScorecardDto {
 
   @IsNumber()
   totalNetScore: number;
+
+
+  // optional
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalScores)
+  playerANetScores?: OptionalScores;
+
+  @IsOptional()
+  @IsNumber()
+  playerAFrontNineNetScore: number;
+
+  @IsOptional()
+  @IsNumber()
+  playerABackNineNetScore: number;
+
+  @IsOptional()
+  @IsNumber()
+  playerATotalNetScore: number;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalScores)
+  playerBNetScores?: OptionalScores;
+
+  @IsOptional()
+  @IsNumber()
+  playerBFrontNineNetScore: number;
+
+  @IsOptional()
+  @IsNumber()
+  playerBBackNineNetScore: number;
+
+  @IsOptional()
+  @IsNumber()
+  playerBTotalNetScore: number;
 
 }
