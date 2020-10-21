@@ -3,7 +3,6 @@ import { ScorecardsController } from './scorecards.controller';
 import { ScorecardsService } from './scorecards.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Scorecard, ScorecardSchema } from './models/scorecard.schema';
-import { TeamsModule } from '../teams/teams.module';
 
 @Module({
   imports:[

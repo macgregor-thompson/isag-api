@@ -18,7 +18,9 @@ import { CoursesModule } from './courses/courses.module';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    MongooseModule.forRoot(process.env.DATABASE_URL),
+    //MongooseModule.forRoot(process.env.DATABASE_URL),
+    MongooseModule.forRoot(process.env.DATABASE_URL, { useFindAndModify: false,  }),
+
     PlayersModule,
     ScorecardsModule,
     YearsModule,

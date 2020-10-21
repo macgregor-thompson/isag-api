@@ -16,6 +16,12 @@ export class Team extends Document {
   @Prop()
   deleted: boolean;
 
+  @Prop()
+  winningBid: number;
+
+  @Prop()
+  winningBidder: string;
+
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);
