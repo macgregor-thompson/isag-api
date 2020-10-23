@@ -4,9 +4,8 @@ import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { CreateUserDto } from './models/create-user.dto';
 import { Collection } from 'mongodb';
-import { UpdatePlayerDto } from '../players/models/update-player.dto';
-import { Player } from '../players/models/player.schema';
 import { UpdateUserDto } from './models/update-user.dto';
+import { Role } from './models/role.enum';
 
 @Injectable()
 export class UserService {
@@ -25,7 +24,12 @@ export class UserService {
     return this.userModel.find({}).exec();
   }
 
+  async isUserNameTaken(username: string): Promise<boolean> {
+    return (await this.collection.countDocuments({username})) > 0;
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
+    createUserDto.role = Role.USER;
     const user = new this.userModel(createUserDto);
     return this.userModel.create(user);
   }

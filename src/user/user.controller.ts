@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Patch, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { User } from './models/user.schema';
 import { UpdateUserDto } from './models/update-user.dto';
+import { CreateUserDto } from './models/create-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -12,6 +13,16 @@ export class UserController {
   @Get()
   async getAll(): Promise<User[]> {
     return this.userService.getAll();
+  }
+
+  @Post()
+  async create(user: CreateUserDto): Promise<User> {
+    return this.userService.getAll();
+  }
+
+  @Get('username')
+  async isUserNameTaken(@Query('username') username): Promise<boolean> {
+    return this.userService.isUserNameTaken(username);
   }
 
   @UseGuards(JwtAuthGuard)

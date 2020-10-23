@@ -5,6 +5,7 @@ import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { LoginError } from './models/login-error';
 import { CreateUserDto } from '../user/models/create-user.dto';
 import { User } from '../user/models/user.schema';
+import { LoginResponse } from './models/login-response';
 
 @Injectable()
 export class AuthService {
@@ -20,12 +21,12 @@ export class AuthService {
 
     if (!user || !match) throw new UnauthorizedException(LoginError.UNAUTHORIZED);
 
-    delete user.username;
-    delete user.password;
     return user;
   }
 
-  async login(user: User) {
+  async login(user: User): Promise<LoginResponse> {
+    delete user.username;
+    delete user.password;
     return {
       user,
       access_token: this.jwtService.sign(user),
@@ -33,10 +34,10 @@ export class AuthService {
   }
 
 
-  async signUp(creteUserDto: CreateUserDto) {
-    return hashSync(creteUserDto.password, genSaltSync())
-
-   // const user = await this.usersService.create(creteUserDto);
-   // return user;
+  async signUp(creteUserDto: CreateUserDto): Promise<LoginResponse> {
+    creteUserDto.password =  hashSync(creteUserDto.password, genSaltSync());
+    await this.usersService.create(creteUserDto);
+    const user: User = await this.usersService.findOne(creteUserDto.username);
+    return this.login(user);
   }
 }

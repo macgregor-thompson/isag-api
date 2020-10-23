@@ -5,10 +5,10 @@ import { Role } from './role.enum';
 @Schema()
 export class User extends Document {
   @Prop()
-  username: string;
+  username?: string;
 
   @Prop()
-  password: string;
+  password?: string;
 
   @Prop()
   firstName: string;
@@ -20,7 +20,13 @@ export class User extends Document {
   role: Role;
 
   @Prop()
-  playerId: string;
+  playerId?: string;
+
+  withoutCreds(): User {
+    delete this.username;
+    delete this.password;
+    return this;
+  }
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
