@@ -15,11 +15,6 @@ export class UserController {
     return this.userService.getAll();
   }
 
-  @Post()
-  async create(user: CreateUserDto): Promise<User> {
-    return this.userService.getAll();
-  }
-
   @Get('username')
   async isUserNameTaken(@Query('username') username): Promise<boolean> {
     return this.userService.isUserNameTaken(username);
