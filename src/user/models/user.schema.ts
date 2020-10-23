@@ -22,11 +22,6 @@ export class User extends Document {
   @Prop()
   playerId?: string;
 
-  withoutCreds(): User {
-    delete this.username;
-    delete this.password;
-    return this;
-  }
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
