@@ -14,7 +14,7 @@ export class YearsService {
               @InjectConnection() private connection: Connection) {}
 
   async getAll(): Promise<Year[]> {
-    return this.yearModel.find({ public: { $ne: false }, deleted: { $ne: true } })
+    return this.yearModel.find({ deleted: { $ne: true } })
       .sort({ year: -1 }).exec();
   }
 
