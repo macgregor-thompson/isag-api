@@ -6,15 +6,16 @@ import { CreateTeamDto } from './models/create-team.dto';
 import { UpdateTeamDto } from './models/update-team.dto';
 import { ObjectID } from '../_shared/mongo-helper';
 
-
 @Injectable()
 export class TeamsService {
-
-  constructor(@InjectModel(Team.name) private teamModel: Model<Team>,
-              @InjectConnection() private connection: Connection) {}
+  constructor(
+    @InjectModel(Team.name) private teamModel: Model<Team>,
+    @InjectConnection() private connection: Connection,
+  ) {}
 
   async getByYear(year: number): Promise<Team[]> {
-    return this.connection.collection(this.teamModel.collection.collectionName)
+    const teams: Team[] = (await this.connection
+      .collection(this.teamModel.collection.collectionName)
       .aggregate<Team>([
         { $match: { year, deleted: { $ne: true } } },
         {
@@ -22,12 +23,12 @@ export class TeamsService {
             from: 'players',
             localField: 'playerA.playerId',
             foreignField: '_id',
-            as: 'playerA',
+            as: 'playerADetails',
           },
         },
         {
           $unwind: {
-            path: '$playerA',
+            path: '$playerADetails',
             preserveNullAndEmptyArrays: true,
           },
         },
@@ -36,51 +37,69 @@ export class TeamsService {
             from: 'players',
             localField: 'playerB.playerId',
             foreignField: '_id',
-            as: 'playerB',
+            as: 'playerBDetails',
           },
         },
         {
           $unwind: {
-            path: '$playerB',
+            path: '$playerBDetails',
             preserveNullAndEmptyArrays: true,
           },
         },
-      ]).toArray();
+      ])
+      .toArray());
+
+    teams.forEach(t => {
+      t.playerA = Object.assign(t.playerADetails, t.playerA);
+      t.playerB = Object.assign(t.playerBDetails, t.playerB);
+    });
+
+    return teams;
   }
 
   async getById(teamId: ObjectID): Promise<Team> {
-    return (await this.connection.collection(this.teamModel.collection.collectionName)
-      .aggregate<Team>([
-        { $match: { _id: teamId } },
-        {
-          $lookup: {
-            from: 'players',
-            localField: 'playerA.playerId',
-            foreignField: '_id',
-            as: 'playerA',
+    const team = await (
+      await this.connection
+        .collection(this.teamModel.collection.collectionName)
+        .aggregate<Team>([
+          { $match: { _id: teamId } },
+          {
+            $lookup: {
+              from: 'players',
+              localField: 'playerA.playerId',
+              foreignField: '_id',
+              as: 'playerADetails',
+            },
           },
-        },
-        {
-          $unwind: {
-            path: '$playerA',
-            preserveNullAndEmptyArrays: true,
+          {
+            $unwind: {
+              path: '$playerADetails',
+              preserveNullAndEmptyArrays: true,
+            },
           },
-        },
-        {
-          $lookup: {
-            from: 'players',
-            localField: 'playerB.playerId',
-            foreignField: '_id',
-            as: 'playerB',
+          {
+            $lookup: {
+              from: 'players',
+              localField: 'playerB.playerId',
+              foreignField: '_id',
+              as: 'playerBDetails',
+            },
           },
-        },
-        {
-          $unwind: {
-            path: '$playerB',
-            preserveNullAndEmptyArrays: true,
+          {
+            $unwind: {
+              path: '$playerBDetails',
+              preserveNullAndEmptyArrays: true,
+            },
           },
-        },
-      ]).toArray())[0];
+        ])
+        .toArray()
+    )[0];
+
+    team.playerA = Object.assign(team.playerADetails, team.playerA);
+    team.playerB = Object.assign(team.playerBDetails, team.playerB);
+
+    return team;
+
   }
 
   async create(createTeamDto: CreateTeamDto): Promise<Team> {
@@ -98,5 +117,4 @@ export class TeamsService {
     }
     return existingTeam;
   }
-
 }

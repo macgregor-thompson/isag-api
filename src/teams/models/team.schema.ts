@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TeamPlayer } from './team-player';
+import { Player } from '../../players/models/player';
 
 @Schema()
 export class Team extends Document {
@@ -21,6 +22,10 @@ export class Team extends Document {
 
   @Prop()
   winningBidder: string;
+
+  // aggregation only
+  playerADetails?: Player;
+  playerBDetails?: Player;
 
 }
 

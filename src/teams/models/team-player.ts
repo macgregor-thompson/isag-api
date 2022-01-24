@@ -13,4 +13,10 @@ export class TeamPlayer {
 
   @IsNumber()
   handicap: number;
+
+  @IsNumber()
+  courseHandicap: number;
+
+  @IsNumber()
+  numShots: number;
 }
