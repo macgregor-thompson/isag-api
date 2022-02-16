@@ -39,10 +39,6 @@ export class CreatePlayerDto {
   state: string;
 
   @IsOptional()
-  @IsBoolean()
-  iSagWinner: boolean;
-
-  @IsOptional()
   @IsString()
   dateOfBirth: string;
 

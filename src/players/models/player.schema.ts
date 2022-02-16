@@ -39,7 +39,7 @@ export class Player extends Document {
   state: string;
 
   @Prop()
-  iSagWinner: boolean;
+  yearsWon: number[];
 
   @Prop()
   dateOfBirth: string;

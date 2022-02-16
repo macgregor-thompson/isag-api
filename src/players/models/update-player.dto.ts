@@ -1,6 +1,6 @@
 import { CreatePlayerDto } from './create-player.dto';
 import { PartialType } from '@nestjs/mapped-types';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class UpdatePlayerDto extends PartialType(CreatePlayerDto) {
 
@@ -11,4 +11,8 @@ export class UpdatePlayerDto extends PartialType(CreatePlayerDto) {
   @IsOptional()
   @IsBoolean()
   deleted?: boolean;
+
+  @IsOptional()
+  @IsArray()
+  yearsWon: number[];
 }
