@@ -1,4 +1,4 @@
-import { IsString, IsBoolean, IsNumber, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsArray } from 'class-validator';
 import { Item } from '../../_shared/entities/item';
 
 export class CreatePlayerDto {
