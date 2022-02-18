@@ -12,20 +12,8 @@ export class RulesService {
   constructor(@InjectModel(Rules.name) private readonly rulesModel: Model<Rules>,
               @InjectConnection() private readonly connection: Connection) {}
 
-  async getByYear(year: number): Promise<Rules> {
-    return this.rulesModel.findOne({year, deleted: { $ne: true } }).exec();
-  }
-
-  async create(createRulesDto: CreateRulesDto): Promise<Rules> {
-    const rules = new this.rulesModel(createRulesDto);
-
-    const existingRules = await this.rulesModel.findOne({ year: rules.year }).exec();
-
-    if (existingRules) {
-      throw new UnauthorizedException(`Rules for #${rules.year} already exists`);
-    }
-
-    return this.rulesModel.create(rules);
+  async get(): Promise<Rules> {
+    return this.rulesModel.findOne({deleted: { $ne: true } }).exec();
   }
 
   async update(id: string, updateRulesDto: UpdateRulesDto): Promise<Rules> {
