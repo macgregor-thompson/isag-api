@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 
 import { Connection, Model } from 'mongoose';
 
 import { Rules } from './models/rules.schema';
 import { UpdateRulesDto } from './models/update-rules.dto';
-import { CreateRulesDto } from './models/create-rules.dto';
 
 @Injectable()
 export class RulesService {
