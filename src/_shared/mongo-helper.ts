@@ -1,22 +1,20 @@
-import { ObjectID } from 'mongodb';
-
-export { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 export class MongoHelper {
-    public static toObjectId(id?: string | ObjectID) {
-        return id ? new ObjectID(id) : null;
+    public static toObjectId(id?: string | ObjectId) {
+        return id ? new ObjectId(id) : null;
     }
 
-    public static toHexString(id?: string | ObjectID): string {
+    public static toHexString(id?: string | ObjectId): string {
         return id ? MongoHelper.toObjectId(id).toHexString() : null;
     }
 
-    public static idsAreEqual(a?: string | ObjectID, b?: string | ObjectID): boolean {
+    public static idsAreEqual(a?: string | ObjectId, b?: string | ObjectId): boolean {
         // Returns null if one or the other is null but not if both are.
         // ? Do we need this check?
         if ((a && !b) || (!a && b)) return null;
 
-        return new ObjectID(a).equals(b);
+        return new ObjectId(a).equals(b);
     }
 
     public static toDateOnlyISOString = (date: string | Date) => new Date(date).toISOString().split('T', 1)[0];

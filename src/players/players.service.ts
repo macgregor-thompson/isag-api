@@ -14,7 +14,7 @@ export class PlayersService {
 
   async getAll(): Promise<Player[]> {
     return this.connection.collection(this.playerModel.collection.collectionName)
-      .aggregate([
+      .aggregate<Player>([
         {$match: {deleted: {$ne: true}}},
         {
           $addFields: {

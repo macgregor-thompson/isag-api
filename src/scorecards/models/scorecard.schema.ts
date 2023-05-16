@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Scores } from './scores';
 import { OptionalScores } from './optional-scores';
-import { ObjectID } from '../../_shared/mongo-helper';
+import { ObjectId } from 'mongodb';
 
 @Schema()
 export class Scorecard extends Document {
@@ -10,10 +10,10 @@ export class Scorecard extends Document {
   year: number;
 
   @Prop()
-  teamId: ObjectID;
+  teamId: ObjectId;
 
   @Prop()
-  courseId: ObjectID;
+  courseId: ObjectId;
 
   @Prop()
   playerANetScores: OptionalScores;

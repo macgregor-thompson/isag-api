@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { RulesModule } from './rules/rules.module';
 import { TeamsModule } from './teams/teams.module';
 import { CoursesModule } from './courses/courses.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -19,7 +20,9 @@ import { CoursesModule } from './courses/courses.module';
       isGlobal: true
     }),
     //MongooseModule.forRoot(process.env.DATABASE_URL),
-    MongooseModule.forRoot(process.env.DATABASE_URL, { useFindAndModify: false,  }),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
+
+    EventsModule,
 
     PlayersModule,
     ScorecardsModule,

@@ -17,7 +17,7 @@ export class ScorecardsService {
 
   async getByYear(year: number): Promise<Scorecard[]> {
     return this.connection.collection(this.ScorecardModel.collection.collectionName)
-      .aggregate([
+      .aggregate<Scorecard>([
         {
           $match: {
             year,

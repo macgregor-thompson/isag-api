@@ -16,7 +16,11 @@ export class User extends Document {
   @Prop()
   lastName: string;
 
-  @Prop()
+  @Prop({
+    type: String,
+    required: true,
+    enum: Role,
+  })
   role: Role;
 
   @Prop()

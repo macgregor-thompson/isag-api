@@ -9,11 +9,11 @@ import { Role } from './models/role.enum';
 
 @Injectable()
 export class UserService {
-  collection: Collection;
+  collection: any;
 
   constructor(@InjectModel(User.name) private readonly userModel: Model<User>,
               @InjectConnection() private readonly connection: Connection) {
-    this.collection = this.connection.collection(this.userModel.collection.collectionName);
+    this.collection = this.connection.collection<User>(this.userModel.collection.collectionName);
   }
 
   async findOne(username: string): Promise<User> {
