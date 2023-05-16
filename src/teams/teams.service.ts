@@ -116,4 +116,11 @@ export class TeamsService {
     }
     return existingTeam;
   }
+
+  async getSimpleTeams(year: number): Promise<Team[]> {
+    return await this.connection
+      .collection(this.teamModel.collection.collectionName)
+      .aggregate<Team>([{ $match: { year, deleted: { $ne: true } } }])
+      .toArray();
+  }
 }

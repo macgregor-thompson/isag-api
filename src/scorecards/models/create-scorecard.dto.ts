@@ -1,78 +1,49 @@
-import {
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { Scores } from './scores';
-import { OptionalScores } from './optional-scores';
 import { ObjectId } from 'mongodb';
 import { MongoHelper } from '../../_shared/mongo-helper';
+import { UpdateScorecardDto } from './update-scorecard.dto';
+import { TeamPlayer } from '../../teams/models/team-player';
 
-export class CreateScorecardDto {
+export class CreateScorecardDto extends UpdateScorecardDto {
+  @IsNotEmpty()
   @IsNumber()
   year: number;
 
-  @IsOptional() // must be here for validation
+  @IsNotEmpty()
   @Type(() => ObjectId)
   @Transform(({ value }) => MongoHelper.toObjectId(value), {
     toClassOnly: true,
   })
   teamId: ObjectId;
 
-  @IsOptional() // must be here for validation
+  @IsNotEmpty()
   @Type(() => ObjectId)
   @Transform(({ value }) => MongoHelper.toObjectId(value), {
     toClassOnly: true,
   })
   courseId: ObjectId;
 
-  @ValidateNested()
-  @Type(() => Scores)
-  teamNetScores: Scores;
+  scoringId: string = makeScorecardId(6);
 
-  @IsNumber()
-  frontNineNetScore: number;
+  constructor(
+    partial: Partial<CreateScorecardDto>,
+    playerA: TeamPlayer,
+    playerB: TeamPlayer,
+  ) {
+    super(playerA, playerB);
+    Object.assign(this, partial);
+  }
+}
 
-  @IsNumber()
-  backNineNetScore: number;
-
-  @IsNumber()
-  totalNetScore: number;
-
-  // optional
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OptionalScores)
-  playerANetScores?: OptionalScores;
-
-  @IsOptional()
-  @IsNumber()
-  playerAFrontNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerABackNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerATotalNetScore: number;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OptionalScores)
-  playerBNetScores?: OptionalScores;
-
-  @IsOptional()
-  @IsNumber()
-  playerBFrontNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerBBackNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerBTotalNetScore: number;
+function makeScorecardId(length): string {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
 }

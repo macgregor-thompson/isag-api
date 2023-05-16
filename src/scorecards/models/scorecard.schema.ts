@@ -1,13 +1,16 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Scores } from './scores';
-import { OptionalScores } from './optional-scores';
 import { ObjectId } from 'mongodb';
+import { PlayerScores } from './player-scores';
 
 @Schema()
 export class Scorecard extends Document {
   @Prop()
   year: number;
+
+  @Prop()
+  scoringId: string;
 
   @Prop()
   teamId: ObjectId;
@@ -16,10 +19,10 @@ export class Scorecard extends Document {
   courseId: ObjectId;
 
   @Prop()
-  playerANetScores: OptionalScores;
+  playerAScores: PlayerScores;
 
   @Prop()
-  playerBNetScores: OptionalScores;
+  playerBScores: PlayerScores;
 
   @Prop()
   teamNetScores: Scores;
@@ -35,6 +38,20 @@ export class Scorecard extends Document {
 
   @Prop()
   deleted: boolean;
+
+  @Prop()
+  confirmed: boolean;
+
+  // for active leaderboard
+
+  @Prop()
+  currentNetToPar: number;
+
+  @Prop()
+  thru: number;
+
+  @Prop()
+  foo: boolean = true;
 }
 
 export const ScorecardSchema = SchemaFactory.createForClass(Scorecard);

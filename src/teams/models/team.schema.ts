@@ -9,6 +9,9 @@ export class Team extends Document {
   year: number;
 
   @Prop()
+  teeTime: Date;
+
+  @Prop()
   playerA: TeamPlayer;
 
   @Prop()

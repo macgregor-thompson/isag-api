@@ -1,6 +1,12 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTeamDto } from './create-team.dto';
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {
   @IsOptional()
@@ -14,4 +20,8 @@ export class UpdateTeamDto extends PartialType(CreateTeamDto) {
   @IsOptional()
   @IsString()
   winningBidder: string;
+
+  @IsOptional()
+  @IsDate()
+  teeTime: Date;
 }

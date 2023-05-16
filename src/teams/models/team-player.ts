@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { ObjectId } from 'mongodb';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { MongoHelper } from '../../_shared/mongo-helper';
 
 export class TeamPlayer {
@@ -14,12 +14,14 @@ export class TeamPlayer {
   @IsNumber()
   handicap: number;
 
-  @IsBoolean()
-  isPlusHandicap: boolean;
-
   @IsNumber()
   courseHandicap: number;
 
+  @IsOptional()
   @IsNumber()
-  numShots: number;
+  playingHandicap?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isPlusHandicap?: boolean;
 }
