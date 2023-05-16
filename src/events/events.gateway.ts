@@ -23,7 +23,7 @@ export class EventsGateway {
   }
 
   @SubscribeMessage('events')
-  handleEvent(@MessageBody() data: string): string {
-    return data;
+  handleEvent(@MessageBody() data: string): Observable<WsResponse<string>> {
+    return of({ event: 'events', data });
   }
 }
