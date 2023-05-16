@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { YearsService } from './years.service';
 import { Year } from './models/year.schema';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
@@ -7,7 +16,6 @@ import { UpdateYearDto } from './models/update-year.dto';
 
 @Controller('years')
 export class YearsController {
-
   constructor(private yearsService: YearsService) {}
 
   @Get()
@@ -42,5 +50,4 @@ export class YearsController {
     ]);
     return current;
   }
-
 }

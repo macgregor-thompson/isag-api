@@ -25,7 +25,6 @@ export class User extends Document {
 
   @Prop()
   playerId?: string;
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

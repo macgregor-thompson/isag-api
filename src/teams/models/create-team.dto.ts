@@ -14,5 +14,3 @@ export class CreateTeamDto {
   @Type(() => TeamPlayer)
   playerB: TeamPlayer;
 }
-
-

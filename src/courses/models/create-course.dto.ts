@@ -1,8 +1,12 @@
-import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { FrontNine } from './front-nine';
 import { BackNine } from './back-nine';
-
 
 export class CreateCourseDto {
   @IsString()
@@ -25,11 +29,11 @@ export class CreateCourseDto {
 
   @ValidateNested()
   @Type(() => FrontNine)
-  frontNine: FrontNine
+  frontNine: FrontNine;
 
   @ValidateNested()
   @Type(() => BackNine)
-  backNine: BackNine
+  backNine: BackNine;
 
   @IsNumber()
   frontNineYards: number;

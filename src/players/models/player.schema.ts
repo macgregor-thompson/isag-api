@@ -4,7 +4,6 @@ import { Item } from '../../_shared/entities/item';
 
 @Schema()
 export class Player extends Document {
-
   @Prop()
   firstName: string;
 
@@ -46,7 +45,6 @@ export class Player extends Document {
 
   @Prop()
   favoriteActivities: Item[];
-
 }
 
 export const PlayerSchema = SchemaFactory.createForClass(Player);

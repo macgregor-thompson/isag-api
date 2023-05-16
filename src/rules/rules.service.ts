@@ -8,11 +8,13 @@ import { UpdateRulesDto } from './models/update-rules.dto';
 
 @Injectable()
 export class RulesService {
-  constructor(@InjectModel(Rules.name) private readonly rulesModel: Model<Rules>,
-              @InjectConnection() private readonly connection: Connection) {}
+  constructor(
+    @InjectModel(Rules.name) private readonly rulesModel: Model<Rules>,
+    @InjectConnection() private readonly connection: Connection,
+  ) {}
 
   async get(): Promise<Rules> {
-    return this.rulesModel.findOne({deleted: { $ne: true } }).exec();
+    return this.rulesModel.findOne({ deleted: { $ne: true } }).exec();
   }
 
   async update(id: string, updateRulesDto: UpdateRulesDto): Promise<Rules> {

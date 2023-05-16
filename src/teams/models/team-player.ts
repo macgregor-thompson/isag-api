@@ -4,11 +4,12 @@ import { Expose, Transform, Type } from 'class-transformer';
 import { MongoHelper } from '../../_shared/mongo-helper';
 
 export class TeamPlayer {
-
   @IsNotEmpty()
-  @Transform(({value}) => MongoHelper.toObjectId(value), { toClassOnly: true })
-  @Expose({name: '_id'})
-  playerId:  ObjectId;
+  @Transform(({ value }) => MongoHelper.toObjectId(value), {
+    toClassOnly: true,
+  })
+  @Expose({ name: '_id' })
+  playerId: ObjectId;
 
   @IsNumber()
   handicap: number;

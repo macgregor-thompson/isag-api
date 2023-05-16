@@ -5,7 +5,6 @@ import { Expense } from './expense';
 
 @Schema()
 export class Year extends Document {
-
   //_id: string;
 
   @Prop()
@@ -52,7 +51,6 @@ export class Year extends Document {
 
   @Prop()
   thirdPlacePercentage: number;
-
 }
 
 export const YearSchema = SchemaFactory.createForClass(Year);

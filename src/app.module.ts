@@ -17,7 +17,7 @@ import { EventsModule } from './events/events.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     //MongooseModule.forRoot(process.env.DATABASE_URL),
     MongooseModule.forRoot(process.env.DATABASE_URL),
@@ -34,7 +34,6 @@ import { EventsModule } from './events/events.module';
     CoursesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ],
+  providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

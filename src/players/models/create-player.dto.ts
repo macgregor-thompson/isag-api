@@ -8,7 +8,6 @@ export class CreatePlayerDto {
   @IsString()
   lastName: string;
 
-
   // optional properties
   @IsOptional()
   @IsNumber()
@@ -45,5 +44,4 @@ export class CreatePlayerDto {
   @IsOptional()
   @IsArray()
   favoriteActivities: Item[];
-
 }

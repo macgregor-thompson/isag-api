@@ -26,7 +26,6 @@ export class Team extends Document {
   // aggregation only
   playerADetails?: Player;
   playerBDetails?: Player;
-
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);

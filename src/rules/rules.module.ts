@@ -6,9 +6,9 @@ import { Rules, RulesSchema } from './models/rules.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([ { name: Rules.name, schema: RulesSchema } ])
+    MongooseModule.forFeature([{ name: Rules.name, schema: RulesSchema }]),
   ],
   controllers: [RulesController],
-  providers: [RulesService]
+  providers: [RulesService],
 })
 export class RulesModule {}

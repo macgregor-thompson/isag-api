@@ -38,5 +38,4 @@ export class BackNine {
   @ValidateNested()
   @Type(() => Hole)
   18: Hole;
-
 }

@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { ScorecardsService } from './scorecards.service';
@@ -8,7 +17,6 @@ import { UpdateScorecardDto } from './models/update-scorecard.dto';
 
 @Controller('scorecards')
 export class ScorecardsController {
-
   constructor(private scorecardService: ScorecardsService) {}
 
   @Get()
@@ -23,13 +31,18 @@ export class ScorecardsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createScorecardDto: CreateScorecardDto): Promise<Scorecard> {
+  async create(
+    @Body() createScorecardDto: CreateScorecardDto,
+  ): Promise<Scorecard> {
     return this.scorecardService.create(createScorecardDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(@Param('id') id, @Body() update: UpdateScorecardDto): Promise<Scorecard> {
+  async update(
+    @Param('id') id,
+    @Body() update: UpdateScorecardDto,
+  ): Promise<Scorecard> {
     return this.scorecardService.update(id, update);
   }
 }

@@ -5,10 +5,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Scorecard, ScorecardSchema } from './models/scorecard.schema';
 
 @Module({
-  imports:[
-    MongooseModule.forFeature([{ name: Scorecard.name, schema: ScorecardSchema }])
+  imports: [
+    MongooseModule.forFeature([
+      { name: Scorecard.name, schema: ScorecardSchema },
+    ]),
   ],
   controllers: [ScorecardsController],
-  providers: [ScorecardsService]
+  providers: [ScorecardsService],
 })
 export class ScorecardsModule {}

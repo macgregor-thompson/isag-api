@@ -1,4 +1,9 @@
-import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { Scores } from './scores';
 import { OptionalScores } from './optional-scores';
@@ -6,18 +11,21 @@ import { ObjectId } from 'mongodb';
 import { MongoHelper } from '../../_shared/mongo-helper';
 
 export class CreateScorecardDto {
-
   @IsNumber()
   year: number;
 
   @IsOptional() // must be here for validation
   @Type(() => ObjectId)
-  @Transform(({value}) => MongoHelper.toObjectId(value), { toClassOnly: true })
+  @Transform(({ value }) => MongoHelper.toObjectId(value), {
+    toClassOnly: true,
+  })
   teamId: ObjectId;
 
   @IsOptional() // must be here for validation
   @Type(() => ObjectId)
-  @Transform(({value}) => MongoHelper.toObjectId(value), { toClassOnly: true })
+  @Transform(({ value }) => MongoHelper.toObjectId(value), {
+    toClassOnly: true,
+  })
   courseId: ObjectId;
 
   @ValidateNested()
@@ -32,7 +40,6 @@ export class CreateScorecardDto {
 
   @IsNumber()
   totalNetScore: number;
-
 
   // optional
   @IsOptional()
@@ -68,5 +75,4 @@ export class CreateScorecardDto {
   @IsOptional()
   @IsNumber()
   playerBTotalNetScore: number;
-
 }

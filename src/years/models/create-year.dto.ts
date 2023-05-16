@@ -12,11 +12,15 @@ export class CreateYearDto {
 
   @IsOptional()
   @IsArray()
-  @Transform(({value}) => value.map(MongoHelper.toObjectId), { toClassOnly: true })
+  @Transform(({ value }) => value.map(MongoHelper.toObjectId), {
+    toClassOnly: true,
+  })
   aPlayerIds: ObjectId[];
 
   @IsOptional()
   @IsArray()
-  @Transform(({value}) => value.map(MongoHelper.toObjectId), { toClassOnly: true })
+  @Transform(({ value }) => value.map(MongoHelper.toObjectId), {
+    toClassOnly: true,
+  })
   bPlayerIds: ObjectId[];
 }

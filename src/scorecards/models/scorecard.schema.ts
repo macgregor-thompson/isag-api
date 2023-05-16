@@ -35,8 +35,6 @@ export class Scorecard extends Document {
 
   @Prop()
   deleted: boolean;
-
 }
 
 export const ScorecardSchema = SchemaFactory.createForClass(Scorecard);
-

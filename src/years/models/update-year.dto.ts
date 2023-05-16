@@ -1,6 +1,12 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateYearDto } from './create-year.dto';
-import { IsArray, IsBoolean, IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 import { Prop } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Expense } from './expense';
@@ -22,7 +28,7 @@ export class UpdateYearDto extends PartialType(CreateYearDto) {
 
   @IsOptional()
   @IsArray()
- // @Transform((values) => values.map(MongoHelper.toObjectId), { toClassOnly: true })
+  // @Transform((values) => values.map(MongoHelper.toObjectId), { toClassOnly: true })
   paidPlayerIds?: ObjectId[];
 
   @IsOptional()
@@ -32,13 +38,13 @@ export class UpdateYearDto extends PartialType(CreateYearDto) {
   @IsOptional()
   @IsArray()
   @Type(() => Expense)
-  @ValidateNested({each: true})
+  @ValidateNested({ each: true })
   expenses?: Expense[];
 
   @IsOptional()
   @IsArray()
   @Type(() => Expense)
-  @ValidateNested({each: true})
+  @ValidateNested({ each: true })
   prizes?: Expense[];
 
   @IsOptional()

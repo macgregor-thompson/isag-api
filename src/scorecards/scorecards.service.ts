@@ -7,22 +7,25 @@ import { UpdateScorecardDto } from './models/update-scorecard.dto';
 
 @Injectable()
 export class ScorecardsService {
-
-  constructor(@InjectModel(Scorecard.name) private readonly ScorecardModel: Model<Scorecard>,
-              @InjectConnection() private readonly connection: Connection) {}
+  constructor(
+    @InjectModel(Scorecard.name)
+    private readonly ScorecardModel: Model<Scorecard>,
+    @InjectConnection() private readonly connection: Connection,
+  ) {}
 
   async getAll(): Promise<Scorecard[]> {
     return this.ScorecardModel.find({ deleted: { $ne: true } }).exec();
   }
 
   async getByYear(year: number): Promise<Scorecard[]> {
-    return this.connection.collection(this.ScorecardModel.collection.collectionName)
+    return this.connection
+      .collection(this.ScorecardModel.collection.collectionName)
       .aggregate<Scorecard>([
         {
           $match: {
             year,
-            deleted: {$ne: true}
-          }
+            deleted: { $ne: true },
+          },
         },
         { $sort: { totalNetScore: 1 } },
         {
@@ -30,8 +33,8 @@ export class ScorecardsService {
             from: 'teams',
             localField: 'teamId',
             foreignField: '_id',
-            as: 'team'
-          }
+            as: 'team',
+          },
         },
         {
           $unwind: {
@@ -68,7 +71,8 @@ export class ScorecardsService {
             preserveNullAndEmptyArrays: true,
           },
         },
-      ]).toArray();
+      ])
+      .toArray();
   }
 
   async create(createScorecardDto: CreateScorecardDto): Promise<Scorecard> {
@@ -76,10 +80,15 @@ export class ScorecardsService {
     return this.ScorecardModel.create(Scorecard);
   }
 
-  async update(id: string, updateScorecardDto: UpdateScorecardDto): Promise<Scorecard> {
-    const existingScorecard = await this.ScorecardModel
-      .findOneAndUpdate({ _id: id }, { $set: updateScorecardDto }, { new: true })
-      .exec();
+  async update(
+    id: string,
+    updateScorecardDto: UpdateScorecardDto,
+  ): Promise<Scorecard> {
+    const existingScorecard = await this.ScorecardModel.findOneAndUpdate(
+      { _id: id },
+      { $set: updateScorecardDto },
+      { new: true },
+    ).exec();
 
     if (!existingScorecard) {
       throw new NotFoundException(`Scorecard #${id} not found`);
