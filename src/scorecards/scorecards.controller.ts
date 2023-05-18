@@ -14,15 +14,12 @@ import { CreateScorecardDto } from './models/create-scorecard.dto';
 import { UpdateScorecardDto } from './models/update-scorecard.dto';
 import { MongoHelper } from '../_shared/mongo-helper';
 import { ObjectId } from 'mongodb';
-import { BaseController } from '../_shared/base-controller';
 import { NotFoundException } from '../_shared/exceptions';
 
 
 @Controller('scorecards')
-export class ScorecardsController extends BaseController {
-  constructor(private scorecardService: ScorecardsService) {
-    super();
-  }
+export class ScorecardsController {
+  constructor(private scorecardService: ScorecardsService) {}
 
   @Get(':year')
   async getByYear(@Param('year') year: number): Promise<Scorecard[]> {
@@ -42,8 +39,6 @@ export class ScorecardsController extends BaseController {
     @Param('scoringId') scoringId: string,
   ): Promise<Scorecard> {
     const card = await this.scorecardService.getByScoringId(year, scoringId);
-    console.log('card:', card);
-
     if (card) return card;
     throw new NotFoundException();
   }

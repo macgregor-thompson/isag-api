@@ -14,7 +14,7 @@ export class TeamsService {
   ) {}
 
   async getByYear(year: number): Promise<Team[]> {
-    const teams: Team[] = await this.connection
+    const teams = await this.connection
       .collection(this.teamModel.collection.collectionName)
       .aggregate<Team>([
         { $match: { year, deleted: { $ne: true } } },

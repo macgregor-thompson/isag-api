@@ -51,6 +51,12 @@ export class Year extends Document {
 
   @Prop()
   thirdPlacePercentage: number;
+
+  @Prop()
+  completed: boolean;
+
+  @Prop({ type: Number })
+  handicapAllowance = 100;
 }
 
 export const YearSchema = SchemaFactory.createForClass(Year);

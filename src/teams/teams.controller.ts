@@ -23,7 +23,6 @@ export class TeamsController {
   async getTeamsByYear(@Query('year') year: number): Promise<Team[]> {
     return this.teamService.getByYear(year);
   }
-
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createTeamDto: CreateTeamDto): Promise<Team> {

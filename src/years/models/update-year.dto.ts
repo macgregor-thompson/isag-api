@@ -7,11 +7,9 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-import { Prop } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Expense } from './expense';
-import { Transform, Type } from 'class-transformer';
-import { MongoHelper } from '../../_shared/mongo-helper';
+import { Type } from 'class-transformer';
 
 export class UpdateYearDto extends PartialType(CreateYearDto) {
   @IsOptional()
@@ -58,4 +56,12 @@ export class UpdateYearDto extends PartialType(CreateYearDto) {
   @IsOptional()
   @IsNumber()
   thirdPlacePercentage?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  completed?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  handicapAllowance?: number;
 }

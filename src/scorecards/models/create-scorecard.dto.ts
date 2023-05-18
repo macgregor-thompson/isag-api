@@ -24,8 +24,6 @@ export class CreateScorecardDto extends UpdateScorecardDto {
   })
   courseId: ObjectId;
 
-  scoringId: string = makeScorecardId(6);
-
   constructor(
     partial: Partial<CreateScorecardDto>,
     playerA: TeamPlayer,

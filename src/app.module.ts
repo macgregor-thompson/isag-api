@@ -13,6 +13,7 @@ import { RulesModule } from './rules/rules.module';
 import { TeamsModule } from './teams/teams.module';
 import { CoursesModule } from './courses/courses.module';
 import { EventsModule } from './events/events.module';
+import { PairingsModule } from './pairings/pairings.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { EventsModule } from './events/events.module';
     RulesModule,
     TeamsModule,
     CoursesModule,
+    PairingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

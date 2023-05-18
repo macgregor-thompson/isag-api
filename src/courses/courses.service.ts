@@ -23,7 +23,6 @@ export class CoursesService {
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     const course = new this.courseModel(createCourseDto);
-    console.log('new course:', course);
     return this.courseModel.create(course);
   }
 
