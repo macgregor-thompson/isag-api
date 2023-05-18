@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   Param,
   Patch,
   Post,
@@ -16,6 +15,8 @@ import { UpdateScorecardDto } from './models/update-scorecard.dto';
 import { MongoHelper } from '../_shared/mongo-helper';
 import { ObjectId } from 'mongodb';
 import { BaseController } from '../_shared/base-controller';
+import { NotFoundException } from '../_shared/exceptions';
+
 
 @Controller('scorecards')
 export class ScorecardsController extends BaseController {
@@ -36,11 +37,15 @@ export class ScorecardsController extends BaseController {
   }
 
   @Get(':year/MyTeamScorecard/:scoringId')
-  async getByScoringId(
+  async getMyTeamScorecard(
     @Param('year') year: number,
     @Param('scoringId') scoringId: string,
   ): Promise<Scorecard> {
-    return this.scorecardService.getByScoringId(year, scoringId);
+    const card = await this.scorecardService.getByScoringId(year, scoringId);
+    console.log('card:', card);
+
+    if (card) return card;
+    throw new NotFoundException();
   }
   @UseGuards(JwtAuthGuard)
   @Post()
