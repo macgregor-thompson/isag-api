@@ -39,6 +39,11 @@ export class PairingsService {
     return pairings;
   }
 
+  async getByScoringId(scoringId: string): Promise<Pairing> {
+    const regex = new RegExp(`^${scoringId}$`, 'i');
+    return this.PairingModel.findOne({ scoringId: regex });
+  }
+
   async create(pairing: CreatePairingDto): Promise<Pairing> {
     const Pairing = new this.PairingModel(pairing);
     return this.PairingModel.create(Pairing);

@@ -4,6 +4,11 @@ import { ObjectId } from 'mongodb';
 import { MongoHelper } from '../../_shared/mongo-helper';
 import { UpdateScorecardDto } from './update-scorecard.dto';
 import { TeamPlayer } from '../../teams/models/team-player';
+import { Course } from '../../courses/models/course.schema';
+import { PlayerScores } from './player-scores';
+import { Scores } from './scores';
+import { setShotsByHole } from '../helpers/set-shots-by-hole';
+import { CreatePlayerScores } from './create-player-scores';
 
 export class CreateScorecardDto extends UpdateScorecardDto {
   @IsNotEmpty()
@@ -28,20 +33,14 @@ export class CreateScorecardDto extends UpdateScorecardDto {
     partial: Partial<CreateScorecardDto>,
     playerA: TeamPlayer,
     playerB: TeamPlayer,
+    course: Course,
   ) {
-    super(playerA, playerB);
+    super();
+    console.log('CreateScorecardDto');
+
+    this.playerAScores = new CreatePlayerScores(playerA, course);
+    this.playerBScores = new CreatePlayerScores(playerB, course);
+    this.teamNetScores = new Scores();
     Object.assign(this, partial);
   }
-}
-
-function makeScorecardId(length): string {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const charactersLength = characters.length;
-  let counter = 0;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return result;
 }

@@ -26,23 +26,6 @@ export class Pairing extends Document {
   // only used in aggregation
   teamA?: Team;
   teamB?: Team;
-
-  constructor() {
-    super();
-    this.scoringId = makeScorecardId(3);
-  }
 }
 
 export const PairingSchema = SchemaFactory.createForClass(Pairing);
-
-function makeScorecardId(length): string {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const charactersLength = characters.length;
-  let counter = 0;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return result;
-}

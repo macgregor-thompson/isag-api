@@ -2,12 +2,10 @@ import {
   ConnectedSocket,
   MessageBody,
   SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-  WsResponse,
+  WebSocketGateway, WebSocketServer,
 } from '@nestjs/websockets';
-import { Observable, of } from 'rxjs';
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
+
 
 @WebSocketGateway({
   cors: {
@@ -15,9 +13,11 @@ import { Socket } from 'socket.io';
   },
 })
 export class EventsGateway {
-  @SubscribeMessage('scores')
-  scoreCardUpdated(): Observable<WsResponse<true>> {
-    return of({ event: 'scorecardUpdated', data: true });
+  @WebSocketServer()
+  server: Server;
+  @SubscribeMessage('scoreCardUpdated')
+  scoreCardUpdated(@ConnectedSocket() client?: Socket): void {
+    this.server.emit('scoreCardUpdated', { data: true });
   }
 
   @SubscribeMessage('events')

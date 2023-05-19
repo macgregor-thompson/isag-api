@@ -59,7 +59,7 @@ export class UpdateYearDto extends PartialType(CreateYearDto) {
 
   @IsOptional()
   @IsBoolean()
-  completed?: boolean;
+  scoresConfirmed?: boolean;
 
   @IsOptional()
   @IsNumber()

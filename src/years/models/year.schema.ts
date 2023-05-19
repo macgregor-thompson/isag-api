@@ -53,7 +53,7 @@ export class Year extends Document {
   thirdPlacePercentage: number;
 
   @Prop()
-  completed: boolean;
+  scoresConfirmed: boolean;
 
   @Prop({ type: Number })
   handicapAllowance = 100;

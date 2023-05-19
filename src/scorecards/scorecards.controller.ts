@@ -16,7 +16,6 @@ import { MongoHelper } from '../_shared/mongo-helper';
 import { ObjectId } from 'mongodb';
 import { NotFoundException } from '../_shared/exceptions';
 
-
 @Controller('scorecards')
 export class ScorecardsController {
   constructor(private scorecardService: ScorecardsService) {}
@@ -33,13 +32,13 @@ export class ScorecardsController {
     return this.scorecardService.getCurrentLeaderboard(year);
   }
 
-  @Get(':year/MyTeamScorecard/:scoringId')
-  async getMyTeamScorecard(
+  @Get(':year/MyPairingScorecards/:scoringId')
+  async getMyPairingScorecards(
     @Param('year') year: number,
     @Param('scoringId') scoringId: string,
-  ): Promise<Scorecard> {
-    const card = await this.scorecardService.getByScoringId(year, scoringId);
-    if (card) return card;
+  ): Promise<Scorecard[]> {
+    const cards = await this.scorecardService.getByScoringId(year, scoringId);
+    if (cards?.length) return cards;
     throw new NotFoundException();
   }
   @UseGuards(JwtAuthGuard)
@@ -67,5 +66,20 @@ export class ScorecardsController {
     @Body() update: UpdateScorecardDto,
   ): Promise<Scorecard> {
     return this.scorecardService.update(id, update);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/MyPairingScorecards')
+  async updateScores(
+    @Param('id') id,
+    @Body() update: UpdateScorecardDto,
+  ): Promise<Scorecard> {
+    return this.scorecardService.updateScores(id, update);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':year/UpdateShotsByHole')
+  async updateShotsByHole(@Param('year') year: number): Promise<void> {
+    return this.scorecardService.updateShotsByHole(year);
   }
 }

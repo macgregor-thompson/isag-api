@@ -6,6 +6,12 @@ import { CreateScorecardDto } from './models/create-scorecard.dto';
 import { UpdateScorecardDto } from './models/update-scorecard.dto';
 import { ObjectId } from 'mongodb';
 import { TeamsService } from '../teams/teams.service';
+import { PairingsService } from '../pairings/pairings.service';
+import { CoursesService } from '../courses/courses.service';
+import { setShotsByHole } from './helpers/set-shots-by-hole';
+import { merge as _merge } from 'lodash';
+import { MongoHelper } from '../_shared/mongo-helper';
+import { EventsGateway } from '../events/events.gateway';
 
 @Injectable()
 export class ScorecardsService {
@@ -14,6 +20,9 @@ export class ScorecardsService {
     private readonly ScorecardModel: Model<Scorecard>,
     @InjectConnection() private readonly connection: Connection,
     private readonly teamService: TeamsService,
+    private readonly pairingsService: PairingsService,
+    private readonly coursesService: CoursesService,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   async getByYear(year: number): Promise<Scorecard[]> {
@@ -24,7 +33,6 @@ export class ScorecardsService {
           $match: {
             year,
             deleted: false,
-            confirmed: true,
           },
         },
         { $sort: { totalNetScore: 1 } },
@@ -49,14 +57,23 @@ export class ScorecardsService {
       .toArray();
   }
 
-  async getByScoringId(year: number, scoringId: string): Promise<Scorecard> {
+  async getByScoringId(year: number, scoringId: string): Promise<Scorecard[]> {
+    const { teamAId, teamBId } = await this.pairingsService.getByScoringId(
+      scoringId,
+    );
+
     return this.connection
       .collection(this.ScorecardModel.collection.collectionName)
       .aggregate<Scorecard>([
-        { $match: { year, scoringId } },
+        {
+          $match: {
+            year,
+            teamId: { $in: [new ObjectId(teamAId), new ObjectId(teamBId)] },
+          },
+        },
         ...this.scorecardAggregations(),
       ])
-      .next();
+      .toArray();
   }
 
   async create(createScorecardDto: CreateScorecardDto): Promise<Scorecard> {
@@ -68,7 +85,10 @@ export class ScorecardsService {
     year: number,
     courseId: ObjectId,
   ): Promise<Scorecard[]> {
-    const teams = await this.teamService.getSimpleTeams(year);
+    const [teams, course] = await Promise.all([
+      this.teamService.getSimpleTeams(year),
+      this.coursesService.getByYear(year),
+    ]);
     const scorecards = teams.map(
       ({ playerA, playerB, ...team }) =>
         new this.ScorecardModel(
@@ -80,6 +100,7 @@ export class ScorecardsService {
             },
             playerA,
             playerB,
+            course,
           ),
         ),
     );
@@ -100,6 +121,51 @@ export class ScorecardsService {
       throw new NotFoundException(`Scorecard #${id} not found`);
     }
     return existingScorecard;
+  }
+
+  async updateScores(
+    id: string,
+    { playerAScores, playerBScores, ...payload }: UpdateScorecardDto,
+  ): Promise<Scorecard> {
+    const update = {
+      ...payload,
+      ...MongoHelper.flattenRecordToSparseMongoUpdate(
+        playerAScores,
+        'playerAScores',
+      ),
+      ...MongoHelper.flattenRecordToSparseMongoUpdate(
+        playerBScores,
+        'playerBScores',
+      ),
+    };
+
+    const afterUpdate = await this.update(id, update);
+
+    this.eventsGateway.scoreCardUpdated();
+
+    return afterUpdate;
+  }
+
+  async updateShotsByHole(year: number): Promise<void> {
+    const course = await this.coursesService.getByYear(year);
+    const allCards = await this.ScorecardModel.find({ year });
+
+    const bulkUpdates = [];
+
+    allCards.forEach(({ _id, playerAScores, playerBScores }) => {
+      bulkUpdates.push({
+        updateOne: {
+          filter: { _id },
+          update: {
+            $set: {
+              playerAScores: setShotsByHole(playerAScores, course),
+              playerBScores: setShotsByHole(playerBScores, course),
+            },
+          },
+        },
+      });
+    });
+    await this.ScorecardModel.bulkWrite(bulkUpdates);
   }
 
   scorecardAggregations(): object[] {

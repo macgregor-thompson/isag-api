@@ -12,5 +12,6 @@ import { TeamsModule } from '../teams/teams.module';
   ],
   controllers: [PairingsController],
   providers: [PairingsService],
+  exports: [PairingsService],
 })
 export class PairingsModule {}

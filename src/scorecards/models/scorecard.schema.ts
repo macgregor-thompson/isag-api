@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Scores } from './scores';
 import { ObjectId } from 'mongodb';
 import { PlayerScores } from './player-scores';
+import Ty from 'mongoose';
 
 @Schema()
 export class Scorecard extends Document {
@@ -49,9 +50,6 @@ export class Scorecard extends Document {
 
   @Prop()
   thru: number;
-
-  @Prop()
-  foo: boolean = true;
 }
 
 export const ScorecardSchema = SchemaFactory.createForClass(Scorecard);

@@ -2,9 +2,9 @@ import { Prop } from '@nestjs/mongoose';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { OptionalScores } from './optional-scores';
-import { Scores } from './scores';
-import { TeamPlayer } from '../../teams/models/team-player';
 import { ObjectId } from 'mongodb';
+import { ShotsByHole } from './shots-by-hole';
+
 
 export class PlayerScores {
   @IsOptional()
@@ -44,9 +44,6 @@ export class PlayerScores {
   @Prop()
   playingHandicap: number;
 
-  constructor(player: TeamPlayer) {
-    Object.assign(this, player);
-    this.grossScores = new Scores();
-    this.netScores = new Scores();
-  }
+  @Prop()
+  shotsByHole: ShotsByHole;
 }

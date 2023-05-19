@@ -1,5 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateScorecardDto } from './create-scorecard.dto';
 import {
   IsBoolean,
   IsNumber,
@@ -9,8 +7,6 @@ import {
 import { Transform, Type } from 'class-transformer';
 import { PlayerScores } from './player-scores';
 import { OptionalScores } from './optional-scores';
-import { TeamPlayer } from '../../teams/models/team-player';
-import { Scores } from './scores';
 
 export class UpdateScorecardDto {
   @IsOptional()
@@ -60,10 +56,4 @@ export class UpdateScorecardDto {
   @IsOptional()
   @IsNumber()
   thru: number;
-
-  constructor(playerA: TeamPlayer, playerB: TeamPlayer) {
-    this.playerAScores = new PlayerScores(playerA);
-    this.playerBScores = new PlayerScores(playerB);
-    this.teamNetScores = new Scores();
-  }
 }

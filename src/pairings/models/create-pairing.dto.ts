@@ -2,6 +2,7 @@ import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { ObjectId } from 'mongodb';
 import { MongoHelper } from '../../_shared/mongo-helper';
+import { isRimrafOptions } from 'rimraf';
 
 export class CreatePairingDto {
   @IsNumber()
@@ -28,4 +29,9 @@ export class CreatePairingDto {
   @IsOptional()
   @IsNumber()
   ordinal?: number;
+
+  @IsOptional()
+  @IsString()
+  scoringId: string;
+
 }

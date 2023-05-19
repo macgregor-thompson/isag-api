@@ -31,4 +31,30 @@ export class MongoHelper {
 
     return sanitizedString;
   }
+
+  public static flattenRecordToSparseMongoUpdate(
+    record: Record<string, any>,
+    prefix?: string,
+  ) {
+    let update = {};
+    const dotPrefix = prefix ? `${prefix}.` : '';
+
+    for (const [key, val] of Object.entries(record)) {
+      const newPrefix = `${dotPrefix}${key}`;
+      if (
+        val != undefined &&
+        !Array.isArray(val) &&
+        val === Object(val) &&
+        !ObjectId.isValid(val)
+      ) {
+        update = {
+          ...update,
+          ...this.flattenRecordToSparseMongoUpdate(val, newPrefix),
+        };
+      } else {
+        update[newPrefix] = val;
+      }
+    }
+    return update;
+  }
 }
