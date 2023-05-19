@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsNumber,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
@@ -22,38 +23,42 @@ export class UpdateScorecardDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => OptionalScores)
-  teamNetScores: OptionalScores;
+  teamNetScores?: OptionalScores;
 
   @IsOptional()
   @IsNumber()
-  frontNineNetScore: number;
+  frontNineNetScore?: number;
 
   @IsOptional()
   @IsNumber()
-  backNineNetScore: number;
+  backNineNetScore?: number;
 
   @IsOptional()
   @IsNumber()
-  totalNetScore: number;
+  totalNetScore?: number;
 
   @IsOptional()
   @IsNumber()
-  totalGrossScore: number;
+  totalGrossScore?: number;
 
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => value === 'true')
-  confirmed = false;
+  confirmed? = false;
 
   @IsOptional()
   @IsBoolean()
-  deleted = false;
+  deleted? = false;
 
   @IsOptional()
   @IsNumber()
-  currentNetToPar: number;
+  currentNetToPar?: number;
 
   @IsOptional()
   @IsNumber()
-  thru: number;
+  thru?: number;
+
+  @IsOptional()
+  @IsString()
+  teeTime?: string;
 }

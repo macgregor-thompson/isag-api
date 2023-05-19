@@ -4,6 +4,7 @@ import { Scores } from './scores';
 import { ObjectId } from 'mongodb';
 import { PlayerScores } from './player-scores';
 import Ty from 'mongoose';
+import { IsOptional, IsString } from 'class-validator';
 
 @Schema()
 export class Scorecard extends Document {
@@ -50,6 +51,9 @@ export class Scorecard extends Document {
 
   @Prop()
   thru: number;
+
+  @Prop()
+  teeTime?: string;
 }
 
 export const ScorecardSchema = SchemaFactory.createForClass(Scorecard);

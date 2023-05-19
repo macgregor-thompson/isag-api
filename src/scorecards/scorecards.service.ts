@@ -123,6 +123,21 @@ export class ScorecardsService {
     return existingScorecard;
   }
 
+  async updateTeeTimes(
+    year: number,
+    teamIds: string[],
+    teeTime: { teeTime: string },
+  ): Promise<void> {
+    const result = await this.ScorecardModel.updateMany(
+      { year, teamId: { $in: teamIds.map(MongoHelper.toObjectId) } },
+      { $set: teeTime },
+    ).exec();
+
+    if (!result.matchedCount) {
+      throw new NotFoundException(`Scorecard(s) not found`);
+    }
+  }
+
   async updateScores(
     id: string,
     { playerAScores, playerBScores, ...payload }: UpdateScorecardDto,

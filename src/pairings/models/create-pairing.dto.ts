@@ -33,5 +33,4 @@ export class CreatePairingDto {
   @IsOptional()
   @IsString()
   scoringId: string;
-
 }

@@ -60,6 +60,15 @@ export class ScorecardsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Patch(':year/UpdateTeeTimes')
+  async updateTeeTimes(
+    @Param('year') year: number,
+    @Body() { teamIds, teeTime }: { teamIds: string[]; teeTime: string },
+  ): Promise<void> {
+    return this.scorecardService.updateTeeTimes(year, teamIds, { teeTime });
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id,
