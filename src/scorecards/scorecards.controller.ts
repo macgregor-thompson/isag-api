@@ -77,7 +77,6 @@ export class ScorecardsController {
     return this.scorecardService.update(id, update);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id/MyPairingScorecards')
   async updateScores(
     @Param('id') id,
