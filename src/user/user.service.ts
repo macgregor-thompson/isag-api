@@ -9,15 +9,19 @@ import { Role } from './models/role.enum';
 
 @Injectable()
 export class UserService {
-  collection: Collection;
+  collection: any;
 
-  constructor(@InjectModel(User.name) private readonly userModel: Model<User>,
-              @InjectConnection() private readonly connection: Connection) {
-    this.collection = this.connection.collection(this.userModel.collection.collectionName);
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectConnection() private readonly connection: Connection,
+  ) {
+    this.collection = this.connection.collection<User>(
+      this.userModel.collection.collectionName,
+    );
   }
 
   async findOne(username: string): Promise<User> {
-    return this.collection.findOne({username});
+    return this.collection.findOne({ username });
   }
 
   async getAll(): Promise<User[]> {
@@ -25,7 +29,7 @@ export class UserService {
   }
 
   async isUserNameTaken(username: string): Promise<boolean> {
-    return (await this.collection.countDocuments({username})) > 0;
+    return (await this.collection.countDocuments({ username })) > 0;
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {

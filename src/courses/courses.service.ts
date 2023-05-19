@@ -8,9 +8,10 @@ import { UpdateCourseDto } from './models/update-course.dto';
 
 @Injectable()
 export class CoursesService {
-
-  constructor(@InjectModel(Course.name) private readonly courseModel: Model<Course>,
-              @InjectConnection() private readonly connection: Connection) {}
+  constructor(
+    @InjectModel(Course.name) private readonly courseModel: Model<Course>,
+    @InjectConnection() private readonly connection: Connection,
+  ) {}
 
   async getAll(): Promise<Course[]> {
     return this.courseModel.find({ deleted: { $ne: true } }).exec();
@@ -22,7 +23,6 @@ export class CoursesService {
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     const course = new this.courseModel(createCourseDto);
-    console.log('new course:', course);
     return this.courseModel.create(course);
   }
 

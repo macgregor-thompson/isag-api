@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
 import { User } from './models/user.schema';
@@ -25,5 +35,4 @@ export class UserController {
   async update(@Param('id') id, @Body() update: UpdateUserDto): Promise<User> {
     return this.userService.update(id, update);
   }
-
 }

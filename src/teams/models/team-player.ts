@@ -1,15 +1,15 @@
-import { IsNumber, IsOptional } from 'class-validator';
-import { ObjectID } from 'mongodb';
-import { Expose, Transform, Type } from 'class-transformer';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { ObjectId } from 'mongodb';
+import { Expose, Transform } from 'class-transformer';
 import { MongoHelper } from '../../_shared/mongo-helper';
 
 export class TeamPlayer {
-
-  @IsOptional() // not really optional, but kept getting stripped out without it...
-  @Transform(MongoHelper.toObjectId, { toClassOnly: true })
-  @Type()
-  @Expose({name: '_id'})
-  playerId:  ObjectID;
+  @IsNotEmpty()
+  @Transform(({ value }) => MongoHelper.toObjectId(value), {
+    toClassOnly: true,
+  })
+  @Expose({ name: '_id' })
+  playerId: ObjectId;
 
   @IsNumber()
   handicap: number;
@@ -17,6 +17,11 @@ export class TeamPlayer {
   @IsNumber()
   courseHandicap: number;
 
+  @IsOptional()
   @IsNumber()
-  numShots: number;
+  playingHandicap?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isPlusHandicap?: boolean;
 }

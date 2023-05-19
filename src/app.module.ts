@@ -12,14 +12,18 @@ import { UserModule } from './user/user.module';
 import { RulesModule } from './rules/rules.module';
 import { TeamsModule } from './teams/teams.module';
 import { CoursesModule } from './courses/courses.module';
+import { EventsModule } from './events/events.module';
+import { PairingsModule } from './pairings/pairings.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     //MongooseModule.forRoot(process.env.DATABASE_URL),
-    MongooseModule.forRoot(process.env.DATABASE_URL, { useFindAndModify: false,  }),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
+
+    EventsModule,
 
     PlayersModule,
     ScorecardsModule,
@@ -29,9 +33,9 @@ import { CoursesModule } from './courses/courses.module';
     RulesModule,
     TeamsModule,
     CoursesModule,
+    PairingsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ],
+  providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

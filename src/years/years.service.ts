@@ -10,20 +10,33 @@ import { UpdateYearDto } from './models/update-year.dto';
 
 @Injectable()
 export class YearsService {
-  constructor(@InjectModel(Year.name) private yearModel: Model<Year>,
-              @InjectConnection() private connection: Connection) {}
+  constructor(
+    @InjectModel(Year.name) private yearModel: Model<Year>,
+    @InjectConnection() private connection: Connection,
+  ) {}
 
   async getAll(): Promise<Year[]> {
-    return this.yearModel.find({ deleted: { $ne: true } })
-      .sort({ year: -1 }).exec();
+    return this.yearModel
+      .find({ deleted: { $ne: true } })
+      .sort({ year: -1 })
+      .exec();
   }
 
   async getCurrentYear(): Promise<Year> {
-    return this.yearModel.findOne({ current: true, public: { $ne: false }, deleted: { $ne: true } }).exec();
+    return this.yearModel
+      .findOne({
+        current: true,
+        public: { $ne: false },
+        deleted: { $ne: true },
+      })
+      .exec();
   }
 
-  async getYearWithPlayers(year: number): Promise<Array<Year & { players: Player[] }>> {
-    return this.connection.collection(this.yearModel.collection.collectionName)
+  async getYearWithPlayers(
+    year: number,
+  ): Promise<Array<Year & { players: Player[] }>> {
+    return this.connection
+      .collection(this.yearModel.collection.collectionName)
       .aggregate<Year & { players: Player[] }>([
         { $match: { year } },
         {
@@ -42,7 +55,8 @@ export class YearsService {
             as: 'bPlayers',
           },
         },
-      ]).toArray();
+      ])
+      .toArray();
   }
 
   async create(createYearDto: CreateYearDto): Promise<Year> {

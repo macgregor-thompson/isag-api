@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { Request } from 'express';
 
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
@@ -9,7 +19,6 @@ import { UpdateCourseDto } from './models/update-course.dto';
 
 @Controller('courses')
 export class CoursesController {
-
   constructor(private coursesService: CoursesService) {}
 
   @Get()
@@ -30,7 +39,10 @@ export class CoursesController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(@Param('id') id, @Body() update: UpdateCourseDto): Promise<Course> {
+  async update(
+    @Param('id') id,
+    @Body() update: UpdateCourseDto,
+  ): Promise<Course> {
     return this.coursesService.update(id, update);
   }
 }

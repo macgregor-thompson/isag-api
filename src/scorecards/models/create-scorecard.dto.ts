@@ -1,72 +1,46 @@
-import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { Scores } from './scores';
-import { OptionalScores } from './optional-scores';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { MongoHelper } from '../../_shared/mongo-helper';
+import { UpdateScorecardDto } from './update-scorecard.dto';
+import { TeamPlayer } from '../../teams/models/team-player';
+import { Course } from '../../courses/models/course.schema';
+import { PlayerScores } from './player-scores';
+import { Scores } from './scores';
+import { setShotsByHole } from '../helpers/set-shots-by-hole';
+import { CreatePlayerScores } from './create-player-scores';
 
-export class CreateScorecardDto {
-
+export class CreateScorecardDto extends UpdateScorecardDto {
+  @IsNotEmpty()
   @IsNumber()
   year: number;
 
-  @IsOptional() // must be here for validation
-  @Type(() => ObjectID)
-  @Transform(MongoHelper.toObjectId, { toClassOnly: true })
-  teamId: ObjectID;
+  @IsNotEmpty()
+  @Type(() => ObjectId)
+  @Transform(({ value }) => MongoHelper.toObjectId(value), {
+    toClassOnly: true,
+  })
+  teamId: ObjectId;
 
-  @IsOptional() // must be here for validation
-  @Type(() => ObjectID)
-  @Transform(MongoHelper.toObjectId, { toClassOnly: true })
-  courseId: ObjectID;
+  @IsNotEmpty()
+  @Type(() => ObjectId)
+  @Transform(({ value }) => MongoHelper.toObjectId(value), {
+    toClassOnly: true,
+  })
+  courseId: ObjectId;
 
-  @ValidateNested()
-  @Type(() => Scores)
-  teamNetScores: Scores;
+  constructor(
+    partial: Partial<CreateScorecardDto>,
+    playerA: TeamPlayer,
+    playerB: TeamPlayer,
+    course: Course,
+  ) {
+    super();
+    console.log('CreateScorecardDto');
 
-  @IsNumber()
-  frontNineNetScore: number;
-
-  @IsNumber()
-  backNineNetScore: number;
-
-  @IsNumber()
-  totalNetScore: number;
-
-
-  // optional
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OptionalScores)
-  playerANetScores?: OptionalScores;
-
-  @IsOptional()
-  @IsNumber()
-  playerAFrontNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerABackNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerATotalNetScore: number;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OptionalScores)
-  playerBNetScores?: OptionalScores;
-
-  @IsOptional()
-  @IsNumber()
-  playerBFrontNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerBBackNineNetScore: number;
-
-  @IsOptional()
-  @IsNumber()
-  playerBTotalNetScore: number;
-
+    this.playerAScores = new CreatePlayerScores(playerA, course);
+    this.playerBScores = new CreatePlayerScores(playerB, course);
+    this.teamNetScores = new Scores();
+    Object.assign(this, partial);
+  }
 }

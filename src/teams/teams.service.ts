@@ -4,7 +4,7 @@ import { Connection, Model } from 'mongoose';
 import { Team } from './models/team.schema';
 import { CreateTeamDto } from './models/create-team.dto';
 import { UpdateTeamDto } from './models/update-team.dto';
-import { ObjectID } from '../_shared/mongo-helper';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class TeamsService {
@@ -14,7 +14,7 @@ export class TeamsService {
   ) {}
 
   async getByYear(year: number): Promise<Team[]> {
-    const teams: Team[] = (await this.connection
+    const teams = await this.connection
       .collection(this.teamModel.collection.collectionName)
       .aggregate<Team>([
         { $match: { year, deleted: { $ne: true } } },
@@ -47,9 +47,9 @@ export class TeamsService {
           },
         },
       ])
-      .toArray());
+      .toArray();
 
-    teams.forEach(t => {
+    teams.forEach((t) => {
       t.playerA = Object.assign(t.playerADetails, t.playerA);
       t.playerB = Object.assign(t.playerBDetails, t.playerB);
     });
@@ -57,7 +57,7 @@ export class TeamsService {
     return teams;
   }
 
-  async getById(teamId: ObjectID): Promise<Team> {
+  async getById(teamId: ObjectId): Promise<Team> {
     const team = await (
       await this.connection
         .collection(this.teamModel.collection.collectionName)
@@ -99,7 +99,6 @@ export class TeamsService {
     team.playerB = Object.assign(team.playerBDetails, team.playerB);
 
     return team;
-
   }
 
   async create(createTeamDto: CreateTeamDto): Promise<Team> {
@@ -116,5 +115,12 @@ export class TeamsService {
       throw new NotFoundException(`Team #${id} not found`);
     }
     return existingTeam;
+  }
+
+  async getSimpleTeams(year: number): Promise<Team[]> {
+    return await this.connection
+      .collection(this.teamModel.collection.collectionName)
+      .aggregate<Team>([{ $match: { year, deleted: { $ne: true } } }])
+      .toArray();
   }
 }

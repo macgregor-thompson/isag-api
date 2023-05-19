@@ -13,6 +13,6 @@ export class CreateTeamDto {
   @ValidateNested()
   @Type(() => TeamPlayer)
   playerB: TeamPlayer;
+
+  deleted = false;
 }
-
-

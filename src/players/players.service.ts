@@ -9,13 +9,16 @@ import { UpdatePlayerDto } from './models/update-player.dto';
 
 @Injectable()
 export class PlayersService {
-  constructor(@InjectModel(Player.name) private readonly playerModel: Model<Player>,
-              @InjectConnection() private readonly connection: Connection) {}
+  constructor(
+    @InjectModel(Player.name) private readonly playerModel: Model<Player>,
+    @InjectConnection() private readonly connection: Connection,
+  ) {}
 
   async getAll(): Promise<Player[]> {
-    return this.connection.collection(this.playerModel.collection.collectionName)
-      .aggregate([
-        {$match: {deleted: {$ne: true}}},
+    return this.connection
+      .collection(this.playerModel.collection.collectionName)
+      .aggregate<Player>([
+        { $match: { deleted: { $ne: true } } },
         {
           $addFields: {
             lowerName: {
@@ -25,12 +28,14 @@ export class PlayersService {
         },
         { $sort: { lowerName: 1 } },
         { $unset: 'lowerName' },
-      ]).toArray();
+      ])
+      .toArray();
   }
 
   async getByYear(year: number): Promise<Player[]> {
-    const yearWithPlayers = await this.connection.collection('years')
-      .aggregate<{players: Player[]}>([
+    const yearWithPlayers = await this.connection
+      .collection('years')
+      .aggregate<{ players: Player[] }>([
         { $match: { year } },
         {
           $lookup: {
@@ -39,10 +44,11 @@ export class PlayersService {
             foreignField: '_id',
             as: 'players',
           },
-        }
-      ]).toArray();
+        },
+      ])
+      .toArray();
 
-    return yearWithPlayers[0].players
+    return yearWithPlayers[0].players;
   }
 
   async create(createPlayerDto: CreatePlayerDto): Promise<Player> {
@@ -60,5 +66,4 @@ export class PlayersService {
     }
     return existingPlayer;
   }
-
 }

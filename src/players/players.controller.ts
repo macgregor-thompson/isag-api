@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 
 import { Request } from 'express';
 
@@ -19,7 +28,9 @@ export class PlayersController {
 
   @Get(':year')
   async getByYear(@Param('year') year: number): Promise<Player[]> {
-    return year ? this.playersService.getByYear(year) : this.playersService.getAll();
+    return year
+      ? this.playersService.getByYear(year)
+      : this.playersService.getAll();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -30,8 +41,10 @@ export class PlayersController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(@Param('id') id, @Body() update: UpdatePlayerDto): Promise<Player> {
+  async update(
+    @Param('id') id,
+    @Body() update: UpdatePlayerDto,
+  ): Promise<Player> {
     return this.playersService.update(id, update);
   }
-
 }

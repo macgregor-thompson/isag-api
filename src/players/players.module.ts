@@ -8,9 +8,9 @@ import { UserModule } from '../user/user.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Player.name, schema: PlayerSchema }]),
-    UserModule
+    UserModule,
   ],
   controllers: [PlayersController],
-  providers: [PlayersService]
+  providers: [PlayersService],
 })
 export class PlayersModule {}

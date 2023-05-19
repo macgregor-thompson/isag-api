@@ -54,4 +54,9 @@ export class Scores {
 
   @IsNumber()
   18: number;
+
+  constructor() {
+    const holes = Array.from({ length: 18 }, (_, i) => i + 1);
+    holes.forEach((h) => (this[h] = null));
+  }
 }

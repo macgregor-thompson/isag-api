@@ -6,8 +6,10 @@ import { YearsService } from './years.service';
 import { Year, YearSchema } from './models/year.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Year.name, schema: YearSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Year.name, schema: YearSchema }]),
+  ],
   controllers: [YearsController],
-  providers: [YearsService]
+  providers: [YearsService],
 })
 export class YearsModule {}

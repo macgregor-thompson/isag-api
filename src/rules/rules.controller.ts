@@ -7,9 +7,7 @@ import { UpdateRulesDto } from './models/update-rules.dto';
 
 @Controller('rules')
 export class RulesController {
-
-  constructor(private rulesService: RulesService) {
-  }
+  constructor(private rulesService: RulesService) {}
 
   @Get()
   async get(): Promise<Rules> {
@@ -18,8 +16,10 @@ export class RulesController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(@Param('id') id, @Body() update: UpdateRulesDto): Promise<Rules> {
+  async update(
+    @Param('id') id,
+    @Body() update: UpdateRulesDto,
+  ): Promise<Rules> {
     return this.rulesService.update(id, update);
   }
-
 }

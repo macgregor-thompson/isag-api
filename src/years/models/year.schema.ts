@@ -1,11 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { Expense } from './expense';
 
 @Schema()
 export class Year extends Document {
-
   //_id: string;
 
   @Prop()
@@ -21,19 +20,19 @@ export class Year extends Document {
   public: boolean;
 
   @Prop()
-  aPlayerIds: ObjectID[];
+  aPlayerIds: ObjectId[];
 
   @Prop()
-  bPlayerIds: ObjectID[];
+  bPlayerIds: ObjectId[];
 
   @Prop()
   deleted: boolean;
 
   @Prop()
-  paidPLayerIds: ObjectID[];
+  paidPLayerIds: ObjectId[];
 
   @Prop()
-  unpaidPlayerIds: ObjectID[];
+  unpaidPlayerIds: ObjectId[];
 
   @Prop()
   playerDues: number;
@@ -53,6 +52,11 @@ export class Year extends Document {
   @Prop()
   thirdPlacePercentage: number;
 
+  @Prop()
+  scoresConfirmed: boolean;
+
+  @Prop({ type: Number })
+  handicapAllowance = 100;
 }
 
 export const YearSchema = SchemaFactory.createForClass(Year);
