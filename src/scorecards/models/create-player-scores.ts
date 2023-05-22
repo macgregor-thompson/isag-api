@@ -7,7 +7,6 @@ import { Course } from '../../courses/models/course.schema';
 export class CreatePlayerScores extends PlayerScores {
   constructor(player: Player, course: Course) {
     super();
-    console.log('CreatePlayerScores');
     Object.assign(this, player);
     this.grossScores = new Scores();
     this.netScores = new Scores();

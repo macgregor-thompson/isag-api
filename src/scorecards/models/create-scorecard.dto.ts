@@ -36,8 +36,6 @@ export class CreateScorecardDto extends UpdateScorecardDto {
     course: Course,
   ) {
     super();
-    console.log('CreateScorecardDto');
-
     this.playerAScores = new CreatePlayerScores(playerA, course);
     this.playerBScores = new CreatePlayerScores(playerB, course);
     this.teamNetScores = new Scores();

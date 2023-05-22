@@ -5,6 +5,7 @@ import { MongoHelper } from '../../_shared/mongo-helper';
 import { isRimrafOptions } from 'rimraf';
 
 export class CreatePairingDto {
+  @IsOptional()
   @IsNumber()
   year: number;
 

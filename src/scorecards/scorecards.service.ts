@@ -62,6 +62,8 @@ export class ScorecardsService {
       scoringId,
     );
 
+    if (!teamAId || !teamBId) return;
+
     return this.connection
       .collection(this.ScorecardModel.collection.collectionName)
       .aggregate<Scorecard>([
@@ -142,6 +144,7 @@ export class ScorecardsService {
     id: string,
     { playerAScores, playerBScores, ...payload }: UpdateScorecardDto,
   ): Promise<Scorecard> {
+
     const update = {
       ...payload,
       ...MongoHelper.flattenRecordToSparseMongoUpdate(
@@ -164,17 +167,23 @@ export class ScorecardsService {
   async updateShotsByHole(year: number): Promise<void> {
     const course = await this.coursesService.getByYear(year);
     const allCards = await this.ScorecardModel.find({ year });
+    const teams = await this.teamService.getSimpleTeams(2023);
 
     const bulkUpdates = [];
 
-    allCards.forEach(({ _id, playerAScores, playerBScores }) => {
+    allCards.forEach(({ _id, playerAScores, playerBScores, teamId }) => {
+      const team = teams.find(t => t._id.toHexString() === teamId.toHexString());
+      const scoresA = setShotsByHole(playerAScores, course);
+      const scoresB = setShotsByHole(playerBScores, course)
       bulkUpdates.push({
         updateOne: {
           filter: { _id },
           update: {
             $set: {
-              playerAScores: setShotsByHole(playerAScores, course),
-              playerBScores: setShotsByHole(playerBScores, course),
+              playerAScores: _merge(team.playerA,
+                  {grossScores: playerAScores.grossScores, netScores: playerAScores.netScores, shotsByHole: scoresA.shotsByHole}),
+              playerBScores: _merge(team.playerB,
+                  {grossScores: playerBScores.grossScores, netScores: playerBScores.netScores, shotsByHole: scoresB.shotsByHole}),
             },
           },
         },

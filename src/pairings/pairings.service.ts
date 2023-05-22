@@ -41,7 +41,9 @@ export class PairingsService {
 
   async getByScoringId(scoringId: string): Promise<Pairing> {
     const regex = new RegExp(`^${scoringId}$`, 'i');
-    return this.PairingModel.findOne({ scoringId: regex });
+    const pairing = await this.PairingModel.findOne({ scoringId: regex });
+    if (!pairing) throw new NotFoundException(`Pairing not found`);
+    return pairing;
   }
 
   async create(pairing: CreatePairingDto): Promise<Pairing> {

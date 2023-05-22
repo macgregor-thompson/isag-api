@@ -32,6 +32,13 @@ export class ScorecardsController {
     return this.scorecardService.getCurrentLeaderboard(year);
   }
 
+  @Get(':year/OhShit')
+  async ohShit(
+      @Param('year') year: number,
+  ): Promise<void> {
+    await this.scorecardService.updateShotsByHole(year);
+  }
+
   @Get(':year/MyPairingScorecards/:scoringId')
   async getMyPairingScorecards(
     @Param('year') year: number,

@@ -1,9 +1,10 @@
 import { Prop } from '@nestjs/mongoose';
-import { IsOptional, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { OptionalScores } from './optional-scores';
 import { ObjectId } from 'mongodb';
 import { ShotsByHole } from './shots-by-hole';
+import { MongoHelper } from '../../_shared/mongo-helper';
 
 
 export class PlayerScores {
@@ -12,13 +13,16 @@ export class PlayerScores {
   @Type(() => OptionalScores)
   grossScores: OptionalScores;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   frontNineGrossScore: number;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   backNineGrossScore: number;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   totalGrossScore: number;
 
   @IsOptional()
@@ -26,24 +30,35 @@ export class PlayerScores {
   @Type(() => OptionalScores)
   netScores: OptionalScores;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   frontNineNetScore: number;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   backNineNetScore: number;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   totalNetScore: number;
 
-  @Prop()
+  @IsOptional()
+  @Type(() => ObjectId)
+  @Transform(({ value }) => MongoHelper.toObjectId(value), {
+    toClassOnly: true,
+  })
   playerId: ObjectId;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   courseHandicap: number;
 
-  @Prop()
+  @IsOptional()
+  @IsNumber()
   playingHandicap: number;
 
-  @Prop()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ShotsByHole)
   shotsByHole: ShotsByHole;
 }
